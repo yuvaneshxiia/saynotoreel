@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Reel Free Space</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Rajdhani',sans-serif;
+    min-height:100vh;
+
+    background:
+    radial-gradient(circle at top left,#1b2735,#090a0f 40%),
+    radial-gradient(circle at bottom right,#0f1724,#000000 60%);
+
+    color:white;
+    overflow-x:hidden;
+
+    padding:20px;
+}
+
+/* STARS */
+
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+
+    background-image:
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(white 1px, transparent 1px);
+
+    background-size:60px 60px;
+    background-position:0 0,30px 30px;
+
+    opacity:0.08;
+    z-index:-1;
+}
+
+/* CONTAINER */
+
+.container{
+    width:100%;
+    max-width:850px;
+    margin:auto;
+}
+
+/* TOPBAR */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:30px;
+    gap:15px;
+}
+
+.name-box{
+    flex:1;
+    background:rgba(255,255,255,0.08);
+    border:1px solid rgba(255,255,255,0.1);
+    border-radius:20px;
+    padding:15px 20px;
+
+    font-size:clamp(20px,5vw,42px);
+    font-family:'Orbitron',sans-serif;
+    color:#00ffe5;
+}
+
+.profile{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    overflow:hidden;
+    border:3px solid #00ffe5;
+}
+
+.profile img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* MAIN CARD */
+
+.card{
+    background:rgba(255,255,255,0.05);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:30px;
+
+    padding:30px;
+
+    backdrop-filter:blur(12px);
+}
+
+/* HEADING */
+
+.heading{
+    text-align:center;
+
+    font-size:clamp(35px,8vw,80px);
+
+    font-family:'Orbitron',sans-serif;
+
+    margin-bottom:35px;
+
+    color:#00ffe5;
+
+    text-shadow:
+    0 0 10px #00ffe5,
+    0 0 25px #00ffe5;
+}
+
+/* INPUTS */
+
+.input-group{
+    margin-bottom:30px;
+}
+
+.label{
+    font-size:clamp(22px,4vw,36px);
+
+    margin-bottom:12px;
+
+    color:#9be7ff;
+
+    font-family:'Orbitron',sans-serif;
+}
+
+.time-input{
+    width:100%;
+    height:82px;
+
+    border:none;
+    outline:none;
+
+    border-radius:22px;
+
+    padding:0 20px;
+
+    background:rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,0.1);
+
+    color:white;
+
+    font-size:clamp(22px,4vw,34px);
+
+    font-family:'Orbitron',sans-serif;
+}
+
+/* RESULT */
+
+.result{
+    width:100%;
+
+    background:rgba(0,255,229,0.08);
+
+    border:1px solid rgba(0,255,229,0.18);
+
+    border-radius:24px;
+
+    padding:25px;
+
+    margin-top:10px;
+
+    text-align:center;
+
+    font-size:clamp(22px,5vw,36px);
+
+    font-family:'Orbitron',sans-serif;
+
+    color:#00ffe5;
+}
+
+/* BUTTON */
+
+.start-btn{
+    width:100%;
+    height:85px;
+
+    border:none;
+
+    border-radius:25px;
+
+    margin-top:30px;
+
+    cursor:pointer;
+
+    font-size:clamp(24px,5vw,42px);
+
+    font-family:'Orbitron',sans-serif;
+
+    font-weight:700;
+
+    color:black;
+
+    background:
+    linear-gradient(135deg,#00ffe5,#00a2ff);
+
+    box-shadow:
+    0 0 25px rgba(0,255,229,0.4);
+
+    transition:0.3s;
+}
+
+.start-btn:hover{
+    transform:scale(1.02);
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .card{
+        padding:20px;
+    }
+
+    .time-input{
+        height:72px;
+    }
+
+    .start-btn{
+        height:75px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <!-- TOPBAR -->
+
+    <div class="topbar">
+
+        <div class="name-box">
+            YUVANESH
+        </div>
+
+        <div class="profile">
+            <img src="https://i.imgur.com/2DhmtJ4.jpeg">
+        </div>
+
+    </div>
+
+    <!-- CARD -->
+
+    <div class="card">
+
+        <div class="heading">
+            REEL FREE SPACE
+        </div>
+
+        <!-- SLEEP -->
+
+        <div class="input-group">
+
+            <div class="label">
+                Yesterday Sleep Time
+            </div>
+
+            <input
+                type="time"
+                id="sleepTime"
+                class="time-input"
+                oninput="calculateSleep()"
+            >
+
+        </div>
+
+        <!-- WAKE -->
+
+        <div class="input-group">
+
+            <div class="label">
+                Morning Wake Time
+            </div>
+
+            <input
+                type="time"
+                id="wakeTime"
+                class="time-input"
+                oninput="calculateSleep()"
+            >
+
+        </div>
+
+        <!-- RESULT -->
+
+        <div class="result" id="sleepResult">
+            SET YOUR TIME
+        </div>
+
+        <!-- BUTTON -->
+
+        <button class="start-btn" onclick="startTracking()">
+            START TRACKING
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* CLEAR OLD DATA AFTER REFRESH */
+
+window.onload = function(){
+
+    document.getElementById("sleepTime").value = "";
+    document.getElementById("wakeTime").value = "";
+
+    localStorage.removeItem("sleepTime");
+    localStorage.removeItem("wakeTime");
+}
+
+/* CONVERT */
+
+function convertToMinutes(time){
+
+    let parts = time.split(":");
+
+    return parseInt(parts[0]) * 60 +
+    parseInt(parts[1]);
+}
+
+/* CALCULATE SLEEP */
+
+function calculateSleep(){
+
+    let sleep =
+    document.getElementById("sleepTime").value;
+
+    let wake =
+    document.getElementById("wakeTime").value;
+
+    if(!sleep || !wake){
+
+        document.getElementById("sleepResult")
+        .innerHTML = "SET YOUR TIME";
+
+        return;
+    }
+
+    let sleepMin =
+    convertToMinutes(sleep);
+
+    let wakeMin =
+    convertToMinutes(wake);
+
+    if(wakeMin <= sleepMin){
+
+        wakeMin += 24 * 60;
+    }
+
+    let total = wakeMin - sleepMin;
+
+    let hrs = Math.floor(total / 60);
+
+    let mins = total % 60;
+
+    document.getElementById("sleepResult")
+    .innerHTML =
+    `YOU SLEPT FOR <br>${hrs} HOURS ${mins} MINUTES`;
+
+}
+
+/* START */
+
+function startTracking(){
+
+    let sleep =
+    document.getElementById("sleepTime").value;
+
+    let wake =
+    document.getElementById("wakeTime").value;
+
+    if(!sleep || !wake){
+
+        alert("Please set both times");
+
+        return;
+    }
+
+    /* SAVE */
+
+    localStorage.setItem("sleepTime",sleep);
+    localStorage.setItem("wakeTime",wake);
+
+    /* NAVIGATE */
+
+    window.location.href = "hours.html";
+}
+
+</script>
+
+</body>
+</html>

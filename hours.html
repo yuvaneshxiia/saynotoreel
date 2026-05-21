@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>Hours Tracker</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Rajdhani',sans-serif;
+    min-height:100vh;
+
+    background:
+    radial-gradient(circle at top left,#1b2735,#090a0f 40%),
+    radial-gradient(circle at bottom right,#0f1724,#000000 60%);
+
+    color:white;
+    overflow-x:hidden;
+    padding:20px 14px 120px;
+}
+
+/* STARS */
+
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+
+    background-image:
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(white 1px, transparent 1px);
+
+    background-size:60px 60px;
+    background-position:0 0,30px 30px;
+
+    opacity:0.08;
+    z-index:-1;
+}
+
+/* GLOW */
+
+.glow1,
+.glow2{
+    position:fixed;
+    width:320px;
+    height:320px;
+    border-radius:50%;
+    filter:blur(100px);
+    z-index:-1;
+}
+
+.glow1{
+    background:#00ffe5;
+    top:-120px;
+    left:-100px;
+    opacity:0.18;
+}
+
+.glow2{
+    background:#8f00ff;
+    bottom:-120px;
+    right:-100px;
+    opacity:0.18;
+}
+
+/* TOPBAR */
+
+.topbar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    gap:15px;
+    margin-bottom:25px;
+}
+
+.username{
+    flex:1;
+
+    background:rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    padding:14px 20px;
+
+    border-radius:20px;
+
+    font-size:clamp(20px,5vw,38px);
+
+    font-family:'Orbitron',sans-serif;
+
+    color:#00ffe5;
+}
+
+.profile{
+    width:78px;
+    height:78px;
+
+    border-radius:50%;
+    overflow:hidden;
+
+    border:3px solid #00ffe5;
+}
+
+.profile img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+/* SCORE */
+
+.score-box{
+    display:flex;
+    justify-content:center;
+    margin-bottom:28px;
+}
+
+.score{
+    padding:16px 30px;
+
+    border-radius:22px;
+
+    font-size:clamp(22px,5vw,36px);
+
+    font-family:'Orbitron',sans-serif;
+
+    background:
+    linear-gradient(135deg,#ffe600,#ffb300);
+
+    color:black;
+
+    box-shadow:
+    0 0 20px rgba(255,214,10,0.45);
+}
+
+/* HOURS */
+
+.hours-container{
+    width:100%;
+    max-width:900px;
+    margin:auto;
+
+    display:flex;
+    flex-direction:column;
+    gap:20px;
+}
+
+/* ROW */
+
+.hour-row{
+    display:flex;
+    align-items:center;
+    gap:18px;
+}
+
+/* TIME BOX */
+
+.time-box{
+    flex:1;
+
+    min-height:92px;
+
+    border-radius:24px;
+
+    display:flex;
+    align-items:center;
+
+    padding:0 22px;
+
+    font-size:clamp(16px,4vw,28px);
+
+    font-family:'Orbitron',sans-serif;
+
+    color:#00ffe5;
+
+    background:rgba(255,255,255,0.05);
+
+    border:1px solid rgba(255,255,255,0.08);
+}
+
+/* CHECK */
+
+.check-wrapper{
+    width:105px;
+    height:92px;
+
+    border-radius:24px;
+
+    background:rgba(255,255,255,0.05);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.check-container{
+    width:62px;
+    height:62px;
+
+    border-radius:18px;
+
+    display:flex;
+    justify-content:center;
+    align-items:center;
+
+    background:
+    linear-gradient(135deg,#00ffe5,#0077ff);
+}
+
+/* CUSTOM CHECKBOX */
+
+.check-container input{
+
+    appearance:none;
+    -webkit-appearance:none;
+
+    width:30px;
+    height:30px;
+
+    border-radius:8px;
+
+    border:3px solid white;
+
+    background:rgba(255,255,255,0.12);
+
+    cursor:pointer;
+
+    position:relative;
+}
+
+.check-container input:checked{
+
+    background:white;
+}
+
+.check-container input:checked::after{
+
+    content:'✔';
+
+    position:absolute;
+
+    top:50%;
+    left:50%;
+
+    transform:translate(-50%,-50%);
+
+    color:#0077ff;
+
+    font-size:18px;
+
+    font-weight:bold;
+}
+
+/* BUTTON */
+
+.finish-btn{
+    width:100%;
+    height:82px;
+
+    border:none;
+    border-radius:22px;
+
+    margin-top:20px;
+
+    cursor:pointer;
+
+    font-size:clamp(22px,5vw,36px);
+
+    font-family:'Orbitron',sans-serif;
+
+    background:
+    linear-gradient(135deg,#ffe600,#ff9900);
+
+    color:black;
+}
+
+/* POPUP */
+
+.popup{
+    position:fixed;
+    inset:0;
+
+    background:rgba(0,0,0,0.7);
+
+    display:none;
+
+    justify-content:center;
+    align-items:center;
+
+    z-index:999;
+}
+
+.popup-card{
+    width:90%;
+    max-width:420px;
+
+    padding:35px 25px;
+
+    border-radius:28px;
+
+    background:#0f1724;
+
+    text-align:center;
+}
+
+.popup-title{
+    font-size:42px;
+
+    font-family:'Orbitron',sans-serif;
+
+    color:#ffe600;
+
+    margin-bottom:20px;
+}
+
+.popup-score{
+    font-size:60px;
+
+    font-family:'Orbitron',sans-serif;
+
+    color:#00ffe5;
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .time-box{
+        min-height:76px;
+        font-size:14px;
+        padding:0 12px;
+    }
+
+    .check-wrapper{
+        width:80px;
+        height:76px;
+    }
+
+    .check-container{
+        width:50px;
+        height:50px;
+    }
+
+    .check-container input{
+        width:24px;
+        height:24px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<div class="glow1"></div>
+<div class="glow2"></div>
+
+<!-- TOP -->
+
+<div class="topbar">
+
+    <div class="username">
+        REEL FREE USER
+    </div>
+
+    <div class="profile">
+        <img src="https://i.imgur.com/2DhmtJ4.jpeg">
+    </div>
+
+</div>
+
+<!-- SCORE -->
+
+<div class="score-box">
+
+    <div class="score">
+        🪙 SCORE :
+        <span id="scoreValue">0</span>
+    </div>
+
+</div>
+
+<!-- HOURS -->
+
+<div class="hours-container"
+id="hoursContainer">
+
+</div>
+
+<!-- POPUP -->
+
+<div class="popup"
+id="popup">
+
+    <div class="popup-card">
+
+        <div class="popup-title">
+            YOUR SCORE
+        </div>
+
+        <div class="popup-score"
+        id="finalScore">
+            0 🪙
+        </div>
+
+    </div>
+
+</div>
+
+<script>
+
+/* GET USER TIMES */
+
+let sleepTime =
+localStorage.getItem("sleepTime")
+|| "22:30";
+
+let wakeTime =
+localStorage.getItem("wakeTime")
+|| "06:30";
+
+/* CONVERT TO MINUTES */
+
+function convertToMinutes(time){
+
+    let parts = time.split(":");
+
+    return (
+        parseInt(parts[0]) * 60
+        +
+        parseInt(parts[1])
+    );
+}
+
+/* FORMAT TIME */
+
+function formatTime(minutes){
+
+    minutes =
+    minutes % (24 * 60);
+
+    let hour =
+    Math.floor(minutes / 60);
+
+    let minute =
+    minutes % 60;
+
+    let ampm =
+    hour >= 12 ? "PM" : "AM";
+
+    hour =
+    hour % 12;
+
+    if(hour === 0){
+
+        hour = 12;
+    }
+
+    return `
+    ${hour}:${minute
+    .toString()
+    .padStart(2,'0')}
+    ${ampm}
+    `;
+}
+
+/* START = WAKE TIME */
+
+let start =
+convertToMinutes(wakeTime);
+
+/* END = YESTERDAY SLEEP TIME */
+
+let end =
+convertToMinutes(sleepTime);
+
+if(end <= start){
+
+    end += 24 * 60;
+}
+
+/* CONTAINER */
+
+let container =
+document.getElementById(
+"hoursContainer"
+);
+
+/* CREATE TIMELINE */
+
+for(
+    let current = start;
+    current < end;
+    current += 60
+){
+
+    let next =
+    current + 60;
+
+    if(next > end){
+
+        next = end;
+    }
+
+    let row =
+    document.createElement("div");
+
+    row.className =
+    "hour-row";
+
+    row.innerHTML = `
+
+    <div class="time-box">
+
+        ${formatTime(current)}
+        -
+        ${formatTime(next)}
+
+    </div>
+
+    <div class="check-wrapper">
+
+        <div class="check-container">
+
+            <input
+            type="checkbox"
+            class="hourCheck">
+
+        </div>
+
+    </div>
+
+    `;
+
+    container.appendChild(row);
+}
+
+/* BUTTON */
+
+let button =
+document.createElement("button");
+
+button.className =
+"finish-btn";
+
+button.innerText =
+"CALCULATE SCORE";
+
+button.onclick =
+calculateScore;
+
+container.appendChild(button);
+
+/* SCORE */
+
+function calculateScore(){
+
+    let checks =
+    document.querySelectorAll(
+    ".hourCheck"
+    );
+
+    let checked = 0;
+
+    checks.forEach(check=>{
+
+        if(check.checked){
+
+            checked++;
+        }
+
+    });
+
+    let score =
+    checked * 10;
+
+    document.getElementById(
+    "scoreValue"
+    ).innerText = score;
+
+    document.getElementById(
+    "finalScore"
+    ).innerText =
+    score + " 🪙";
+
+    localStorage.setItem(
+    "todayScore",
+    score
+    );
+
+    document.getElementById(
+    "popup"
+    ).style.display =
+    "flex";
+
+    setTimeout(()=>{
+
+        document.getElementById(
+        "popup"
+        ).style.display =
+        "none";
+
+    },3000);
+}
+
+</script>
+
+</body>
+</html>
