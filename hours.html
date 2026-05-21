@@ -74,7 +74,7 @@ body::before{
     opacity:0.18;
 }
 
-/* TOPBAR */
+/* TOP */
 
 .topbar{
     display:flex;
@@ -82,6 +82,15 @@ body::before{
     align-items:center;
     gap:15px;
     margin-bottom:25px;
+}
+
+/* NAME */
+
+.name-section{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex:1;
 }
 
 .username{
@@ -102,6 +111,32 @@ body::before{
     color:#00ffe5;
 }
 
+.edit-name-btn{
+    width:48px;
+    height:48px;
+
+    border:none;
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+    background:
+    linear-gradient(135deg,#00ffe5,#0077ff);
+
+    box-shadow:
+    0 0 15px rgba(0,255,229,0.35);
+
+    color:white;
+}
+
+/* PROFILE */
+
+.profile-wrapper{
+    position:relative;
+}
+
 .profile{
     width:78px;
     height:78px;
@@ -116,6 +151,29 @@ body::before{
     width:100%;
     height:100%;
     object-fit:cover;
+}
+
+.edit-profile-btn{
+    position:absolute;
+
+    bottom:-5px;
+    right:-5px;
+
+    width:34px;
+    height:34px;
+
+    border:none;
+    border-radius:50%;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(135deg,#00ffe5,#0077ff);
+
+    color:white;
+
+    box-shadow:
+    0 0 10px rgba(0,255,229,0.35);
 }
 
 /* SCORE */
@@ -142,6 +200,42 @@ body::before{
 
     box-shadow:
     0 0 20px rgba(255,214,10,0.45);
+}
+
+/* RESET */
+
+.reset-box{
+    display:flex;
+    justify-content:center;
+    margin-bottom:25px;
+}
+
+.reset-btn{
+    border:none;
+
+    padding:10px 20px;
+
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-family:'Orbitron',sans-serif;
+
+    font-size:14px;
+
+    color:white;
+
+    background:
+    linear-gradient(135deg,#ff004c,#ff6a00);
+
+    box-shadow:
+    0 0 15px rgba(255,0,76,0.4);
+
+    transition:0.3s;
+}
+
+.reset-btn:hover{
+    transform:scale(1.05);
 }
 
 /* HOURS */
@@ -187,6 +281,10 @@ body::before{
     background:rgba(255,255,255,0.05);
 
     border:1px solid rgba(255,255,255,0.08);
+
+    box-shadow:
+    inset 0 0 12px rgba(255,255,255,0.05),
+    0 0 12px rgba(0,255,229,0.08);
 }
 
 /* CHECK */
@@ -218,9 +316,12 @@ body::before{
 
     background:
     linear-gradient(135deg,#00ffe5,#0077ff);
+
+    box-shadow:
+    0 0 18px rgba(0,255,229,0.35);
 }
 
-/* CUSTOM CHECKBOX */
+/* CHECKBOX */
 
 .check-container input{
 
@@ -239,11 +340,17 @@ body::before{
     cursor:pointer;
 
     position:relative;
+
+    transition:0.25s;
 }
 
 .check-container input:checked{
 
     background:white;
+
+    box-shadow:
+    0 0 12px white,
+    0 0 20px white;
 }
 
 .check-container input:checked::after{
@@ -255,7 +362,7 @@ body::before{
     top:50%;
     left:50%;
 
-    transform:translate(-50%,-50%);
+    transform:translate(-50%,-52%);
 
     color:#0077ff;
 
@@ -314,6 +421,8 @@ body::before{
     background:#0f1724;
 
     text-align:center;
+
+    border:1px solid rgba(255,255,255,0.08);
 }
 
 .popup-title{
@@ -373,12 +482,40 @@ body::before{
 
 <div class="topbar">
 
-    <div class="username">
-        REEL FREE USER
+    <div class="name-section">
+
+        <div class="username"
+        id="userNameText">
+            REEL FREE USER
+        </div>
+
+        <button class="edit-name-btn"
+        onclick="changeName()">
+            ✏️
+        </button>
+
     </div>
 
-    <div class="profile">
-        <img src="https://i.imgur.com/2DhmtJ4.jpeg">
+    <div class="profile-wrapper">
+
+        <div class="profile">
+            <img
+            src="https://i.imgur.com/2DhmtJ4.jpeg"
+            id="profileImage">
+        </div>
+
+        <button
+        class="edit-profile-btn"
+        onclick="document.getElementById('profileInput').click()">
+            ✏️
+        </button>
+
+        <input
+        type="file"
+        id="profileInput"
+        accept="image/*"
+        hidden>
+
     </div>
 
 </div>
@@ -391,6 +528,17 @@ body::before{
         🪙 SCORE :
         <span id="scoreValue">0</span>
     </div>
+
+</div>
+
+<!-- RESET -->
+
+<div class="reset-box">
+
+    <button class="reset-btn"
+    onclick="resetAllChecks()">
+        RESET
+    </button>
 
 </div>
 
@@ -423,7 +571,7 @@ id="popup">
 
 <script>
 
-/* GET USER TIMES */
+/* GET TIMES */
 
 let sleepTime =
 localStorage.getItem("sleepTime")
@@ -446,7 +594,7 @@ function convertToMinutes(time){
     );
 }
 
-/* FORMAT TIME */
+/* FORMAT */
 
 function formatTime(minutes){
 
@@ -478,12 +626,10 @@ function formatTime(minutes){
     `;
 }
 
-/* START = WAKE TIME */
+/* START & END */
 
 let start =
 convertToMinutes(wakeTime);
-
-/* END = YESTERDAY SLEEP TIME */
 
 let end =
 convertToMinutes(sleepTime);
@@ -500,7 +646,9 @@ document.getElementById(
 "hoursContainer"
 );
 
-/* CREATE TIMELINE */
+/* CREATE HOURS */
+
+let index = 0;
 
 for(
     let current = start;
@@ -515,6 +663,11 @@ for(
 
         next = end;
     }
+
+    let checkedState =
+    localStorage.getItem(
+    "check_" + index
+    ) === "true";
 
     let row =
     document.createElement("div");
@@ -538,7 +691,9 @@ for(
 
             <input
             type="checkbox"
-            class="hourCheck">
+            class="hourCheck"
+            data-id="${index}"
+            ${checkedState ? "checked" : ""}>
 
         </div>
 
@@ -547,7 +702,30 @@ for(
     `;
 
     container.appendChild(row);
+
+    index++;
 }
+
+/* SAVE CHECKBOX */
+
+document.addEventListener(
+"change",
+function(e){
+
+    if(
+    e.target.classList.contains(
+    "hourCheck"
+    )){
+
+        let id =
+        e.target.dataset.id;
+
+        localStorage.setItem(
+        "check_" + id,
+        e.target.checked
+        );
+    }
+});
 
 /* BUTTON */
 
@@ -615,6 +793,126 @@ function calculateScore(){
         "none";
 
     },3000);
+}
+
+/* RESET */
+
+function resetAllChecks(){
+
+    let checks =
+    document.querySelectorAll(
+    ".hourCheck"
+    );
+
+    checks.forEach((check,index)=>{
+
+        check.checked = false;
+
+        localStorage.removeItem(
+        "check_" + index
+        );
+    });
+
+    document.getElementById(
+    "scoreValue"
+    ).innerText = 0;
+}
+
+/* CHANGE NAME */
+
+function changeName(){
+
+    let currentName =
+    document.getElementById(
+    "userNameText"
+    ).innerText;
+
+    let newName =
+    prompt(
+    "Enter your name",
+    currentName
+    );
+
+    if(
+    newName &&
+    newName.trim() !== ""
+    ){
+
+        document.getElementById(
+        "userNameText"
+        ).innerText =
+        newName;
+
+        localStorage.setItem(
+        "userName",
+        newName
+        );
+    }
+}
+
+/* LOAD NAME */
+
+let savedName =
+localStorage.getItem(
+"userName"
+);
+
+if(savedName){
+
+    document.getElementById(
+    "userNameText"
+    ).innerText =
+    savedName;
+}
+
+/* PROFILE IMAGE */
+
+document.getElementById(
+"profileInput"
+)
+.addEventListener(
+"change",
+function(event){
+
+    let file =
+    event.target.files[0];
+
+    if(file){
+
+        let reader =
+        new FileReader();
+
+        reader.onload =
+        function(e){
+
+            document.getElementById(
+            "profileImage"
+            ).src =
+            e.target.result;
+
+            localStorage.setItem(
+            "profileImage",
+            e.target.result
+            );
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+
+/* LOAD IMAGE */
+
+let savedImage =
+localStorage.getItem(
+"profileImage"
+);
+
+if(savedImage){
+
+    document.getElementById(
+    "profileImage"
+    ).src =
+    savedImage;
 }
 
 </script>
