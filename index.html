@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -62,27 +63,70 @@ body::before{
     display:flex;
     justify-content:space-between;
     align-items:center;
-    margin-bottom:30px;
     gap:15px;
+    margin-bottom:25px;
 }
 
-.name-box{
-    flex:1;
-    background:rgba(255,255,255,0.08);
-    border:1px solid rgba(255,255,255,0.1);
-    border-radius:20px;
-    padding:15px 20px;
+/* NAME */
 
-    font-size:clamp(20px,5vw,42px);
+.name-section{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    flex:1;
+}
+
+.username{
+    flex:1;
+
+    background:rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,0.15);
+
+    padding:14px 20px;
+
+    border-radius:20px;
+
+    font-size:clamp(20px,5vw,38px);
+
     font-family:'Orbitron',sans-serif;
+
     color:#00ffe5;
 }
 
+.edit-name-btn{
+    width:48px;
+    height:48px;
+
+    border:none;
+    border-radius:14px;
+
+    cursor:pointer;
+
+    font-size:20px;
+
+    background:
+    linear-gradient(135deg,#00ffe5,#0077ff);
+
+    box-shadow:
+    0 0 15px rgba(0,255,229,0.35);
+
+    color:white;
+}
+
+/* PROFILE */
+
+.profile-wrapper{
+    position:relative;
+}
+
 .profile{
-    width:80px;
-    height:80px;
+    width:78px;
+    height:78px;
+
     border-radius:50%;
     overflow:hidden;
+
     border:3px solid #00ffe5;
 }
 
@@ -91,6 +135,30 @@ body::before{
     height:100%;
     object-fit:cover;
 }
+
+.edit-profile-btn{
+    position:absolute;
+
+    bottom:-5px;
+    right:-5px;
+
+    width:34px;
+    height:34px;
+
+    border:none;
+    border-radius:50%;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(135deg,#00ffe5,#0077ff);
+
+    color:white;
+
+    box-shadow:
+    0 0 10px rgba(0,255,229,0.35);
+}
+
 
 /* MAIN CARD */
 
@@ -238,6 +306,45 @@ body::before{
     }
 
 }
+/* Date & day */
+.date-box{
+
+    min-width:140px;
+
+    padding:12px 18px;
+
+    border-radius:20px;
+
+    background:rgba(0,255,229,0.08);
+
+    border:1px solid rgba(0,255,229,0.2);
+
+    color:#00ffe5;
+
+    font-family:'Orbitron',sans-serif;
+
+    font-size:16px;
+
+    text-align:center;
+
+    box-shadow:
+    0 0 15px rgba(0,255,229,0.2);
+
+}
+
+
+@media(max-width:600px){
+
+    .topbar{
+        flex-wrap:wrap;
+    }
+
+    .date-box{
+        order:3;
+        width:100%;
+    }
+
+}
 
 </style>
 </head>
@@ -247,18 +354,49 @@ body::before{
 <div class="container">
 
     <!-- TOPBAR -->
-
     <div class="topbar">
 
-        <div class="name-box">
-            YUVANESH
+    <div class="name-section">
+
+        <div class="username"
+        id="userNameText">
+            User001
         </div>
 
-        <div class="profile">
-            <img src="https://i.imgur.com/2DhmtJ4.jpeg">
-        </div>
+        <button class="edit-name-btn"
+        onclick="changeName()">
+            ✏️
+        </button>
 
     </div>
+
+    <div class="date-box" id="dateBox">
+    LOADING...
+    </div>
+
+    <div class="profile-wrapper">
+
+        <div class="profile">
+            <img
+            src="https://i.imgur.com/2DhmtJ4.jpeg"
+            id="profileImage">
+        </div>
+
+        <button
+        class="edit-profile-btn"
+        onclick="document.getElementById('profileInput').click()">
+            ✏️
+        </button>
+
+        <input
+        type="file"
+        id="profileInput"
+        accept="image/*"
+        hidden>
+
+    </div>
+
+</div>
 
     <!-- CARD -->
 
@@ -408,8 +546,138 @@ function startTracking(){
 
     window.location.href = "hours.html";
 }
+function changeName(){
 
+    let currentName =
+    document.getElementById(
+    "userNameText"
+    ).innerText;
+
+    let newName =
+    prompt(
+    "Enter your name",
+    currentName
+    );
+
+    if(
+    newName &&
+    newName.trim() !== ""
+    ){
+
+        document.getElementById(
+        "userNameText"
+        ).innerText =
+        newName;
+
+        localStorage.setItem(
+        "userName",
+        newName
+        );
+    }
+}
+
+/* LOAD NAME */
+
+let savedName =
+localStorage.getItem(
+"userName"
+);
+
+if(savedName){
+
+    document.getElementById(
+    "userNameText"
+    ).innerText =
+    savedName;
+}
+
+/* PROFILE IMAGE */
+
+document.getElementById(
+"profileInput"
+)
+.addEventListener(
+"change",
+function(event){
+
+    let file =
+    event.target.files[0];
+
+    if(file){
+
+        let reader =
+        new FileReader();
+
+        reader.onload =
+        function(e){
+
+            document.getElementById(
+            "profileImage"
+            ).src =
+            e.target.result;
+
+            localStorage.setItem(
+            "profileImage",
+            e.target.result
+            );
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+
+/* LOAD IMAGE */
+
+let savedImage =
+localStorage.getItem(
+"profileImage"
+);
+
+if(savedImage){
+
+    document.getElementById(
+    "profileImage"
+    ).src =
+    savedImage;
+}
+/* date &day */
+function updateDate(){
+
+    let today = new Date();
+
+    let days = [
+        "SUNDAY",
+        "MONDAY",
+        "TUESDAY",
+        "WEDNESDAY",
+        "THURSDAY",
+        "FRIDAY",
+        "SATURDAY"
+    ];
+
+
+    let day = days[today.getDay()];
+
+
+    let date =
+    String(today.getDate()).padStart(2,'0')
+    + "-" +
+    String(today.getMonth()+1).padStart(2,'0')
+    + "-" +
+    today.getFullYear();
+
+
+    document.getElementById("dateBox")
+    .innerHTML =
+    `${day}<br>${date}`;
+
+}
+
+
+updateDate();
+
+setInterval(updateDate,60000);
 </script>
 
 </body>
-</html>
+</html><script async data-explicit-opt-in="true" data-cookie-opt-in="true" data-deployment-id="dpl_GQq2pTyEjX3n5PMsAp9JbyhVohmk" src="https://vercel.live/_next-live/feedback/feedback.js"></script>
