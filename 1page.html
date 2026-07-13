@@ -1,0 +1,770 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Reel Free Space - Register</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+<style>
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    font-family:'Rajdhani',sans-serif;
+    min-height:100vh;
+
+    background:
+    radial-gradient(circle at top left,#1b2735,#090a0f 40%),
+    radial-gradient(circle at bottom right,#0f1724,#000000 60%);
+
+    background-size:200% 200%;
+
+    animation:bgShift 12s ease-in-out infinite;
+
+    color:white;
+    overflow-x:hidden;
+
+    padding:20px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    position:relative;
+}
+
+@keyframes bgShift{
+    0%{ background-position:0% 0%; }
+    50%{ background-position:100% 100%; }
+    100%{ background-position:0% 0%; }
+}
+
+/* STARS */
+
+body::before{
+    content:'';
+    position:fixed;
+    inset:0;
+
+    background-image:
+    radial-gradient(white 1px, transparent 1px),
+    radial-gradient(white 1px, transparent 1px);
+
+    background-size:60px 60px;
+    background-position:0 0,30px 30px;
+
+    opacity:0.08;
+    z-index:-1;
+
+    animation:starDrift 60s linear infinite;
+}
+
+@keyframes starDrift{
+    0%{ background-position:0 0,30px 30px; }
+    100%{ background-position:600px 600px,630px 630px; }
+}
+
+/* PARTICLE CANVAS */
+
+#particleCanvas{
+    position:fixed;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    z-index:-1;
+
+    pointer-events:none;
+}
+
+/* CONTAINER */
+
+.container{
+    width:100%;
+    max-width:600px;
+    margin:auto;
+}
+
+/* MAIN CARD */
+
+.card{
+    background:rgba(255,255,255,0.05);
+
+    border:1px solid rgba(255,255,255,0.08);
+
+    border-radius:30px;
+
+    padding:30px;
+
+    backdrop-filter:blur(12px);
+
+    position:relative;
+
+    animation:cardEnter 0.8s cubic-bezier(0.22,1,0.36,1) both,
+    cardGlow 3s ease-in-out infinite;
+}
+
+@keyframes cardEnter{
+    0%{
+        opacity:0;
+        transform:translateY(40px) scale(0.92);
+    }
+    100%{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+@keyframes cardGlow{
+    0%,100%{
+        box-shadow:0 0 25px rgba(0,255,229,0.08);
+        border-color:rgba(0,255,229,0.15);
+    }
+    50%{
+        box-shadow:0 0 45px rgba(0,255,229,0.25);
+        border-color:rgba(0,255,229,0.4);
+    }
+}
+
+/* HEADING */
+
+.heading{
+    text-align:center;
+
+    font-size:clamp(32px,7vw,60px);
+
+    font-family:'Orbitron',sans-serif;
+
+    margin-bottom:8px;
+
+    color:#00ffe5;
+
+    letter-spacing:2px;
+
+    animation:headingPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes headingPulse{
+    0%,100%{
+        text-shadow:
+        0 0 10px #00ffe5,
+        0 0 25px #00ffe5;
+    }
+    50%{
+        text-shadow:
+        0 0 18px #00ffe5,
+        0 0 45px #00ffe5,
+        0 0 65px #0077ff;
+    }
+}
+
+.subheading{
+    text-align:center;
+
+    font-size:clamp(14px,3vw,20px);
+
+    color:#9be7ff;
+
+    margin-bottom:35px;
+
+    letter-spacing:2px;
+
+    animation:subFade 2s ease-in-out infinite;
+}
+
+@keyframes subFade{
+    0%,100%{ opacity:0.7; }
+    50%{ opacity:1; }
+}
+
+/* PROFILE PICKER */
+
+.profile-picker{
+    display:flex;
+    justify-content:center;
+
+    margin-bottom:30px;
+}
+
+.profile-wrapper{
+    position:relative;
+}
+
+.profile{
+    width:100px;
+    height:100px;
+
+    border-radius:50%;
+    overflow:hidden;
+
+    border:3px solid #00ffe5;
+
+    box-shadow:
+    0 0 20px rgba(0,255,229,0.35);
+
+    background:rgba(255,255,255,0.08);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:40px;
+
+    animation:profileFloat 3.5s ease-in-out infinite;
+}
+
+@keyframes profileFloat{
+    0%,100%{
+        transform:translateY(0);
+        box-shadow:0 0 20px rgba(0,255,229,0.35);
+    }
+    50%{
+        transform:translateY(-8px);
+        box-shadow:0 0 32px rgba(0,255,229,0.55);
+    }
+}
+
+.profile img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.edit-profile-btn{
+    position:absolute;
+
+    bottom:0;
+    right:0;
+
+    width:36px;
+    height:36px;
+
+    border:none;
+    border-radius:50%;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(135deg,#00ffe5,#0077ff);
+
+    color:white;
+
+    box-shadow:
+    0 0 10px rgba(0,255,229,0.35);
+
+    animation:btnPulse 2s ease-in-out infinite;
+}
+
+@keyframes btnPulse{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.1); }
+}
+
+/* INPUTS */
+
+.input-group{
+    margin-bottom:26px;
+
+    opacity:0;
+
+    animation:groupIn 0.6s ease forwards;
+}
+
+.delay-1{ animation-delay:0.15s; }
+.delay-2{ animation-delay:0.3s; }
+.delay-3{ animation-delay:0.45s; }
+
+@keyframes groupIn{
+    0%{
+        opacity:0;
+        transform:translateX(-20px);
+    }
+    100%{
+        opacity:1;
+        transform:translateX(0);
+    }
+}
+
+.label{
+    font-size:clamp(18px,3.5vw,26px);
+
+    margin-bottom:10px;
+
+    color:#9be7ff;
+
+    font-family:'Orbitron',sans-serif;
+}
+
+.text-input{
+    width:100%;
+    height:70px;
+
+    border:none;
+    outline:none;
+
+    border-radius:22px;
+
+    padding:0 20px;
+
+    background:rgba(255,255,255,0.08);
+
+    border:1px solid rgba(255,255,255,0.1);
+
+    color:white;
+
+    font-size:clamp(18px,3.5vw,26px);
+
+    font-family:'Rajdhani',sans-serif;
+
+    transition:box-shadow 0.3s, border-color 0.3s, transform 0.2s;
+}
+
+.text-input::placeholder{
+    color:rgba(255,255,255,0.35);
+}
+
+.text-input:focus{
+    border-color:#00ffe5;
+
+    box-shadow:0 0 18px rgba(0,255,229,0.45);
+
+    transform:scale(1.015);
+}
+
+.error-msg.shake{
+    animation:shake 0.4s ease;
+}
+
+@keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    20%{ transform:translateX(-8px); }
+    40%{ transform:translateX(8px); }
+    60%{ transform:translateX(-6px); }
+    80%{ transform:translateX(6px); }
+}
+
+/* ERROR */
+
+.error-msg{
+    color:#ff4d6d;
+
+    font-size:16px;
+
+    margin-top:8px;
+
+    text-align:center;
+
+    min-height:20px;
+}
+
+/* BUTTON */
+
+.start-btn{
+    width:100%;
+    height:85px;
+
+    border:none;
+
+    border-radius:25px;
+
+    margin-top:10px;
+
+    cursor:pointer;
+
+    font-size:clamp(22px,5vw,38px);
+
+    font-family:'Orbitron',sans-serif;
+
+    font-weight:700;
+
+    color:black;
+
+    background:
+    linear-gradient(135deg,#00ffe5,#00a2ff);
+
+    background-size:200% 200%;
+
+    box-shadow:
+    0 0 25px rgba(0,255,229,0.4);
+
+    transition:0.3s;
+
+    position:relative;
+    overflow:hidden;
+
+    animation:btnShimmer 3s ease-in-out infinite;
+}
+
+@keyframes btnShimmer{
+    0%,100%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
+}
+
+.start-btn:hover{
+    transform:scale(1.02);
+
+    box-shadow:0 0 40px rgba(0,255,229,0.7);
+}
+
+.start-btn:active{
+    transform:scale(0.97);
+}
+
+/* MOBILE */
+
+@media(max-width:600px){
+
+    .card{
+        padding:20px;
+    }
+
+    .text-input{
+        height:62px;
+    }
+
+    .start-btn{
+        height:75px;
+    }
+
+}
+
+</style>
+</head>
+
+<body>
+
+<canvas id="particleCanvas"></canvas>
+
+<div class="container">
+
+    <div class="card">
+
+        <div class="heading">
+            REEL FREE SPACE
+        </div>
+
+        <div class="subheading">
+            CREATE YOUR ACCOUNT
+        </div>
+
+        <!-- PROFILE PICKER -->
+
+        <div class="profile-picker">
+
+            <div class="profile-wrapper">
+
+                <div class="profile">
+                    <img
+                    src="https://i.imgur.com/2DhmtJ4.jpeg"
+                    id="profileImage">
+                </div>
+
+                <button
+                class="edit-profile-btn"
+                onclick="document.getElementById('profileInput').click()">
+                    ✏️
+                </button>
+
+                <input
+                type="file"
+                id="profileInput"
+                accept="image/*"
+                hidden>
+
+            </div>
+
+        </div>
+
+        <!-- NAME -->
+
+        <div class="input-group delay-1">
+
+            <div class="label">
+                Your Name
+            </div>
+
+            <input
+                type="text"
+                id="regName"
+                class="text-input"
+                placeholder="Enter your name"
+            >
+
+        </div>
+
+        <!-- EMAIL -->
+
+        <div class="input-group delay-2">
+
+            <div class="label">
+                Email
+            </div>
+
+            <input
+                type="email"
+                id="regEmail"
+                class="text-input"
+                placeholder="Enter your email"
+            >
+
+        </div>
+
+        <!-- PASSWORD -->
+
+        <div class="input-group delay-3">
+
+            <div class="label">
+                Password
+            </div>
+
+            <input
+                type="password"
+                id="regPassword"
+                class="text-input"
+                placeholder="Create a password"
+            >
+
+        </div>
+
+        <div class="error-msg" id="errorMsg"></div>
+
+        <!-- BUTTON -->
+
+        <button class="start-btn" onclick="registerUser()">
+            REGISTER
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+
+/* FLOATING GAME-STYLE PARTICLES */
+
+let canvas =
+document.getElementById("particleCanvas");
+
+let ctx =
+canvas.getContext("2d");
+
+function resizeCanvas(){
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+}
+
+resizeCanvas();
+
+window.addEventListener(
+"resize",
+resizeCanvas
+);
+
+let particles = [];
+
+let particleCount = 60;
+
+let colors = [
+    "rgba(0,255,229,",
+    "rgba(0,162,255,",
+    "rgba(155,231,255,"
+];
+
+for(let i = 0; i < particleCount; i++){
+
+    particles.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: Math.random() * 2 + 0.6,
+        speedY: Math.random() * 0.6 + 0.15,
+        drift: Math.random() * 0.4 - 0.2,
+        alpha: Math.random() * 0.6 + 0.2,
+        color: colors[Math.floor(Math.random() * colors.length)]
+    });
+}
+
+function animateParticles(){
+
+    ctx.clearRect(
+    0, 0,
+    canvas.width,
+    canvas.height
+    );
+
+    for(let p of particles){
+
+        ctx.beginPath();
+
+        ctx.arc(
+        p.x, p.y,
+        p.r, 0,
+        Math.PI * 2
+        );
+
+        ctx.fillStyle =
+        p.color + p.alpha + ")";
+
+        ctx.shadowBlur = 8;
+        ctx.shadowColor =
+        p.color + "1)";
+
+        ctx.fill();
+
+        p.y -= p.speedY;
+        p.x += p.drift;
+
+        if(p.y < -10){
+
+            p.y = canvas.height + 10;
+            p.x = Math.random() * canvas.width;
+        }
+
+        if(p.x < -10){
+            p.x = canvas.width + 10;
+        }
+
+        if(p.x > canvas.width + 10){
+            p.x = -10;
+        }
+    }
+
+    requestAnimationFrame(animateParticles);
+}
+
+animateParticles();
+
+/* PROFILE IMAGE UPLOAD */
+
+document.getElementById(
+"profileInput"
+)
+.addEventListener(
+"change",
+function(event){
+
+    let file =
+    event.target.files[0];
+
+    if(file){
+
+        let reader =
+        new FileReader();
+
+        reader.onload =
+        function(e){
+
+            document.getElementById(
+            "profileImage"
+            ).src =
+            e.target.result;
+
+            localStorage.setItem(
+            "profileImage",
+            e.target.result
+            );
+        };
+
+        reader.readAsDataURL(file);
+    }
+});
+
+/* LOAD SAVED IMAGE IF ANY */
+
+let savedImage =
+localStorage.getItem(
+"profileImage"
+);
+
+if(savedImage){
+
+    document.getElementById(
+    "profileImage"
+    ).src =
+    savedImage;
+}
+
+/* SHOW ERROR WITH SHAKE */
+
+function showError(message){
+
+    let errorMsg =
+    document.getElementById("errorMsg");
+
+    errorMsg.innerHTML = message;
+
+    errorMsg.classList.remove("shake");
+
+    /* FORCE REFLOW TO RESTART ANIMATION */
+
+    void errorMsg.offsetWidth;
+
+    errorMsg.classList.add("shake");
+}
+
+/* REGISTER FUNCTION */
+
+function registerUser(){
+
+    let name =
+    document.getElementById("regName").value.trim();
+
+    let email =
+    document.getElementById("regEmail").value.trim();
+
+    let password =
+    document.getElementById("regPassword").value.trim();
+
+    let errorMsg =
+    document.getElementById("errorMsg");
+
+    if(!name || !email || !password){
+
+        showError("Please fill in all fields");
+
+        return;
+    }
+
+    let emailPattern =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!emailPattern.test(email)){
+
+        showError("Please enter a valid email");
+
+        return;
+    }
+
+    if(password.length < 4){
+
+        showError("Password must be at least 4 characters");
+
+        return;
+    }
+
+    errorMsg.innerHTML = "";
+    errorMsg.classList.remove("shake");
+
+    /* SAVE USER DATA */
+
+    localStorage.setItem("userName", name);
+    localStorage.setItem("userEmail", email);
+    localStorage.setItem("userPassword", password);
+
+    /* NAVIGATE TO MAIN PAGE */
+
+    window.location.href = "index.html";
+}
+
+</script>
+
+</body>
+</html>
