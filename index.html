@@ -1,11 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Reel Free Space</title>
+<title>Reel Free Space - Register</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;800&family=Rajdhani:wght@400;500;600;700&display=swap" rel="stylesheet">
 
@@ -25,10 +24,26 @@ body{
     radial-gradient(circle at top left,#1b2735,#090a0f 40%),
     radial-gradient(circle at bottom right,#0f1724,#000000 60%);
 
+    background-size:200% 200%;
+
+    animation:bgShift 12s ease-in-out infinite;
+
     color:white;
     overflow-x:hidden;
 
     padding:20px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    position:relative;
+}
+
+@keyframes bgShift{
+    0%{ background-position:0% 0%; }
+    50%{ background-position:100% 100%; }
+    100%{ background-position:0% 0%; }
 }
 
 /* STARS */
@@ -47,118 +62,36 @@ body::before{
 
     opacity:0.08;
     z-index:-1;
+
+    animation:starDrift 60s linear infinite;
+}
+
+@keyframes starDrift{
+    0%{ background-position:0 0,30px 30px; }
+    100%{ background-position:600px 600px,630px 630px; }
+}
+
+/* PARTICLE CANVAS */
+
+#particleCanvas{
+    position:fixed;
+    inset:0;
+
+    width:100%;
+    height:100%;
+
+    z-index:-1;
+
+    pointer-events:none;
 }
 
 /* CONTAINER */
 
 .container{
     width:100%;
-    max-width:850px;
+    max-width:600px;
     margin:auto;
 }
-
-/* TOPBAR */
-
-.topbar{
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    gap:15px;
-    margin-bottom:25px;
-}
-
-/* NAME */
-
-.name-section{
-    display:flex;
-    align-items:center;
-    gap:10px;
-    flex:1;
-}
-
-.username{
-    flex:1;
-
-    background:rgba(255,255,255,0.08);
-
-    border:1px solid rgba(255,255,255,0.15);
-
-    padding:14px 20px;
-
-    border-radius:20px;
-
-    font-size:clamp(20px,5vw,38px);
-
-    font-family:'Orbitron',sans-serif;
-
-    color:#00ffe5;
-}
-
-.edit-name-btn{
-    width:48px;
-    height:48px;
-
-    border:none;
-    border-radius:14px;
-
-    cursor:pointer;
-
-    font-size:20px;
-
-    background:
-    linear-gradient(135deg,#00ffe5,#0077ff);
-
-    box-shadow:
-    0 0 15px rgba(0,255,229,0.35);
-
-    color:white;
-}
-
-/* PROFILE */
-
-.profile-wrapper{
-    position:relative;
-}
-
-.profile{
-    width:78px;
-    height:78px;
-
-    border-radius:50%;
-    overflow:hidden;
-
-    border:3px solid #00ffe5;
-}
-
-.profile img{
-    width:100%;
-    height:100%;
-    object-fit:cover;
-}
-
-.edit-profile-btn{
-    position:absolute;
-
-    bottom:-5px;
-    right:-5px;
-
-    width:34px;
-    height:34px;
-
-    border:none;
-    border-radius:50%;
-
-    cursor:pointer;
-
-    background:
-    linear-gradient(135deg,#00ffe5,#0077ff);
-
-    color:white;
-
-    box-shadow:
-    0 0 10px rgba(0,255,229,0.35);
-}
-
 
 /* MAIN CARD */
 
@@ -172,6 +105,33 @@ body::before{
     padding:30px;
 
     backdrop-filter:blur(12px);
+
+    position:relative;
+
+    animation:cardEnter 0.8s cubic-bezier(0.22,1,0.36,1) both,
+    cardGlow 3s ease-in-out infinite;
+}
+
+@keyframes cardEnter{
+    0%{
+        opacity:0;
+        transform:translateY(40px) scale(0.92);
+    }
+    100%{
+        opacity:1;
+        transform:translateY(0) scale(1);
+    }
+}
+
+@keyframes cardGlow{
+    0%,100%{
+        box-shadow:0 0 25px rgba(0,255,229,0.08);
+        border-color:rgba(0,255,229,0.15);
+    }
+    50%{
+        box-shadow:0 0 45px rgba(0,255,229,0.25);
+        border-color:rgba(0,255,229,0.4);
+    }
 }
 
 /* HEADING */
@@ -179,38 +139,173 @@ body::before{
 .heading{
     text-align:center;
 
-    font-size:clamp(35px,8vw,80px);
+    font-size:clamp(32px,7vw,60px);
 
     font-family:'Orbitron',sans-serif;
 
-    margin-bottom:35px;
+    margin-bottom:8px;
 
     color:#00ffe5;
 
-    text-shadow:
-    0 0 10px #00ffe5,
-    0 0 25px #00ffe5;
+    letter-spacing:2px;
+
+    animation:headingPulse 2.4s ease-in-out infinite;
+}
+
+@keyframes headingPulse{
+    0%,100%{
+        text-shadow:
+        0 0 10px #00ffe5,
+        0 0 25px #00ffe5;
+    }
+    50%{
+        text-shadow:
+        0 0 18px #00ffe5,
+        0 0 45px #00ffe5,
+        0 0 65px #0077ff;
+    }
+}
+
+.subheading{
+    text-align:center;
+
+    font-size:clamp(14px,3vw,20px);
+
+    color:#9be7ff;
+
+    margin-bottom:35px;
+
+    letter-spacing:2px;
+
+    animation:subFade 2s ease-in-out infinite;
+}
+
+@keyframes subFade{
+    0%,100%{ opacity:0.7; }
+    50%{ opacity:1; }
+}
+
+/* PROFILE PICKER */
+
+.profile-picker{
+    display:flex;
+    justify-content:center;
+
+    margin-bottom:30px;
+}
+
+.profile-wrapper{
+    position:relative;
+}
+
+.profile{
+    width:100px;
+    height:100px;
+
+    border-radius:50%;
+    overflow:hidden;
+
+    border:3px solid #00ffe5;
+
+    box-shadow:
+    0 0 20px rgba(0,255,229,0.35);
+
+    background:rgba(255,255,255,0.08);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:40px;
+
+    animation:profileFloat 3.5s ease-in-out infinite;
+}
+
+@keyframes profileFloat{
+    0%,100%{
+        transform:translateY(0);
+        box-shadow:0 0 20px rgba(0,255,229,0.35);
+    }
+    50%{
+        transform:translateY(-8px);
+        box-shadow:0 0 32px rgba(0,255,229,0.55);
+    }
+}
+
+.profile img{
+    width:100%;
+    height:100%;
+    object-fit:cover;
+}
+
+.edit-profile-btn{
+    position:absolute;
+
+    bottom:0;
+    right:0;
+
+    width:36px;
+    height:36px;
+
+    border:none;
+    border-radius:50%;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(135deg,#00ffe5,#0077ff);
+
+    color:white;
+
+    box-shadow:
+    0 0 10px rgba(0,255,229,0.35);
+
+    animation:btnPulse 2s ease-in-out infinite;
+}
+
+@keyframes btnPulse{
+    0%,100%{ transform:scale(1); }
+    50%{ transform:scale(1.1); }
 }
 
 /* INPUTS */
 
 .input-group{
-    margin-bottom:30px;
+    margin-bottom:26px;
+
+    opacity:0;
+
+    animation:groupIn 0.6s ease forwards;
+}
+
+.delay-1{ animation-delay:0.15s; }
+.delay-2{ animation-delay:0.3s; }
+.delay-3{ animation-delay:0.45s; }
+
+@keyframes groupIn{
+    0%{
+        opacity:0;
+        transform:translateX(-20px);
+    }
+    100%{
+        opacity:1;
+        transform:translateX(0);
+    }
 }
 
 .label{
-    font-size:clamp(22px,4vw,36px);
+    font-size:clamp(18px,3.5vw,26px);
 
-    margin-bottom:12px;
+    margin-bottom:10px;
 
     color:#9be7ff;
 
     font-family:'Orbitron',sans-serif;
 }
 
-.time-input{
+.text-input{
     width:100%;
-    height:82px;
+    height:70px;
 
     border:none;
     outline:none;
@@ -225,33 +320,49 @@ body::before{
 
     color:white;
 
-    font-size:clamp(22px,4vw,34px);
+    font-size:clamp(18px,3.5vw,26px);
 
-    font-family:'Orbitron',sans-serif;
+    font-family:'Rajdhani',sans-serif;
+
+    transition:box-shadow 0.3s, border-color 0.3s, transform 0.2s;
 }
 
-/* RESULT */
+.text-input::placeholder{
+    color:rgba(255,255,255,0.35);
+}
 
-.result{
-    width:100%;
+.text-input:focus{
+    border-color:#00ffe5;
 
-    background:rgba(0,255,229,0.08);
+    box-shadow:0 0 18px rgba(0,255,229,0.45);
 
-    border:1px solid rgba(0,255,229,0.18);
+    transform:scale(1.015);
+}
 
-    border-radius:24px;
+.error-msg.shake{
+    animation:shake 0.4s ease;
+}
 
-    padding:25px;
+@keyframes shake{
+    0%,100%{ transform:translateX(0); }
+    20%{ transform:translateX(-8px); }
+    40%{ transform:translateX(8px); }
+    60%{ transform:translateX(-6px); }
+    80%{ transform:translateX(6px); }
+}
 
-    margin-top:10px;
+/* ERROR */
+
+.error-msg{
+    color:#ff4d6d;
+
+    font-size:16px;
+
+    margin-top:8px;
 
     text-align:center;
 
-    font-size:clamp(22px,5vw,36px);
-
-    font-family:'Orbitron',sans-serif;
-
-    color:#00ffe5;
+    min-height:20px;
 }
 
 /* BUTTON */
@@ -264,11 +375,11 @@ body::before{
 
     border-radius:25px;
 
-    margin-top:30px;
+    margin-top:10px;
 
     cursor:pointer;
 
-    font-size:clamp(24px,5vw,42px);
+    font-size:clamp(22px,5vw,38px);
 
     font-family:'Orbitron',sans-serif;
 
@@ -279,14 +390,32 @@ body::before{
     background:
     linear-gradient(135deg,#00ffe5,#00a2ff);
 
+    background-size:200% 200%;
+
     box-shadow:
     0 0 25px rgba(0,255,229,0.4);
 
     transition:0.3s;
+
+    position:relative;
+    overflow:hidden;
+
+    animation:btnShimmer 3s ease-in-out infinite;
+}
+
+@keyframes btnShimmer{
+    0%,100%{ background-position:0% 50%; }
+    50%{ background-position:100% 50%; }
 }
 
 .start-btn:hover{
     transform:scale(1.02);
+
+    box-shadow:0 0 40px rgba(0,255,229,0.7);
+}
+
+.start-btn:active{
+    transform:scale(0.97);
 }
 
 /* MOBILE */
@@ -297,51 +426,12 @@ body::before{
         padding:20px;
     }
 
-    .time-input{
-        height:72px;
+    .text-input{
+        height:62px;
     }
 
     .start-btn{
         height:75px;
-    }
-
-}
-/* Date & day */
-.date-box{
-
-    min-width:140px;
-
-    padding:12px 18px;
-
-    border-radius:20px;
-
-    background:rgba(0,255,229,0.08);
-
-    border:1px solid rgba(0,255,229,0.2);
-
-    color:#00ffe5;
-
-    font-family:'Orbitron',sans-serif;
-
-    font-size:16px;
-
-    text-align:center;
-
-    box-shadow:
-    0 0 15px rgba(0,255,229,0.2);
-
-}
-
-
-@media(max-width:600px){
-
-    .topbar{
-        flex-wrap:wrap;
-    }
-
-    .date-box{
-        order:3;
-        width:100%;
     }
 
 }
@@ -351,54 +441,9 @@ body::before{
 
 <body>
 
+<canvas id="particleCanvas"></canvas>
+
 <div class="container">
-
-    <!-- TOPBAR -->
-    <div class="topbar">
-
-    <div class="name-section">
-
-        <div class="username"
-        id="userNameText">
-            User001
-        </div>
-
-        <button class="edit-name-btn"
-        onclick="changeName()">
-            ✏️
-        </button>
-
-    </div>
-
-    <div class="date-box" id="dateBox">
-    LOADING...
-    </div>
-
-    <div class="profile-wrapper">
-
-        <div class="profile">
-            <img
-            src="https://i.imgur.com/2DhmtJ4.jpeg"
-            id="profileImage">
-        </div>
-
-        <button
-        class="edit-profile-btn"
-        onclick="document.getElementById('profileInput').click()">
-            ✏️
-        </button>
-
-        <input
-        type="file"
-        id="profileInput"
-        accept="image/*"
-        hidden>
-
-    </div>
-
-</div>
-
-    <!-- CARD -->
 
     <div class="card">
 
@@ -406,50 +451,95 @@ body::before{
             REEL FREE SPACE
         </div>
 
-        <!-- SLEEP -->
+        <div class="subheading">
+            CREATE YOUR ACCOUNT
+        </div>
 
-        <div class="input-group">
+        <!-- PROFILE PICKER -->
+
+        <div class="profile-picker">
+
+            <div class="profile-wrapper">
+
+                <div class="profile">
+                    <img
+                    src="https://i.imgur.com/2DhmtJ4.jpeg"
+                    id="profileImage">
+                </div>
+
+                <button
+                class="edit-profile-btn"
+                onclick="document.getElementById('profileInput').click()">
+                    ✏️
+                </button>
+
+                <input
+                type="file"
+                id="profileInput"
+                accept="image/*"
+                hidden>
+
+            </div>
+
+        </div>
+
+        <!-- NAME -->
+
+        <div class="input-group delay-1">
 
             <div class="label">
-                Yesterday Sleep Time
+                Your Name
             </div>
 
             <input
-                type="time"
-                id="sleepTime"
-                class="time-input"
-                oninput="calculateSleep()"
+                type="text"
+                id="regName"
+                class="text-input"
+                placeholder="Enter your name"
             >
 
         </div>
 
-        <!-- WAKE -->
+        <!-- EMAIL -->
 
-        <div class="input-group">
+        <div class="input-group delay-2">
 
             <div class="label">
-                Morning Wake Time
+                Email
             </div>
 
             <input
-                type="time"
-                id="wakeTime"
-                class="time-input"
-                oninput="calculateSleep()"
+                type="email"
+                id="regEmail"
+                class="text-input"
+                placeholder="Enter your email"
             >
 
         </div>
 
-        <!-- RESULT -->
+        <!-- PASSWORD -->
 
-        <div class="result" id="sleepResult">
-            SET YOUR TIME
+        <div class="input-group delay-3">
+
+            <div class="label">
+                Password
+            </div>
+
+            <input
+                type="password"
+                id="regPassword"
+                class="text-input"
+                placeholder="Create a password"
+            >
+
         </div>
+
+        <div class="error-msg" id="errorMsg"></div>
 
         <!-- BUTTON -->
 
-        <button class="start-btn" onclick="startTracking()">
-            START TRACKING
+        <button class="start-btn" onclick="registerUser()">
+            REGISTER
         </button>
 
     </div>
@@ -458,140 +548,101 @@ body::before{
 
 <script>
 
-/* CLEAR OLD DATA AFTER REFRESH */
+/* FLOATING GAME-STYLE PARTICLES */
 
-window.onload = function(){
+let canvas =
+document.getElementById("particleCanvas");
 
-    document.getElementById("sleepTime").value = "";
-    document.getElementById("wakeTime").value = "";
+let ctx =
+canvas.getContext("2d");
 
-    localStorage.removeItem("sleepTime");
-    localStorage.removeItem("wakeTime");
+function resizeCanvas(){
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
 }
 
-/* CONVERT */
+resizeCanvas();
 
-function convertToMinutes(time){
-
-    let parts = time.split(":");
-
-    return parseInt(parts[0]) * 60 +
-    parseInt(parts[1]);
-}
-
-/* CALCULATE SLEEP */
-
-function calculateSleep(){
-
-    let sleep =
-    document.getElementById("sleepTime").value;
-
-    let wake =
-    document.getElementById("wakeTime").value;
-
-    if(!sleep || !wake){
-
-        document.getElementById("sleepResult")
-        .innerHTML = "SET YOUR TIME";
-
-        return;
-    }
-
-    let sleepMin =
-    convertToMinutes(sleep);
-
-    let wakeMin =
-    convertToMinutes(wake);
-
-    if(wakeMin <= sleepMin){
-
-        wakeMin += 24 * 60;
-    }
-
-    let total = wakeMin - sleepMin;
-
-    let hrs = Math.floor(total / 60);
-
-    let mins = total % 60;
-
-    document.getElementById("sleepResult")
-    .innerHTML =
-    `YOU SLEPT FOR <br>${hrs} HOURS ${mins} MINUTES`;
-
-}
-
-/* START */
-
-function startTracking(){
-
-    let sleep =
-    document.getElementById("sleepTime").value;
-
-    let wake =
-    document.getElementById("wakeTime").value;
-
-    if(!sleep || !wake){
-
-        alert("Please set both times");
-
-        return;
-    }
-
-    /* SAVE */
-
-    localStorage.setItem("sleepTime",sleep);
-    localStorage.setItem("wakeTime",wake);
-
-    /* NAVIGATE */
-
-    window.location.href = "hours.html";
-}
-function changeName(){
-
-    let currentName =
-    document.getElementById(
-    "userNameText"
-    ).innerText;
-
-    let newName =
-    prompt(
-    "Enter your name",
-    currentName
-    );
-
-    if(
-    newName &&
-    newName.trim() !== ""
-    ){
-
-        document.getElementById(
-        "userNameText"
-        ).innerText =
-        newName;
-
-        localStorage.setItem(
-        "userName",
-        newName
-        );
-    }
-}
-
-/* LOAD NAME */
-
-let savedName =
-localStorage.getItem(
-"userName"
+window.addEventListener(
+"resize",
+resizeCanvas
 );
 
-if(savedName){
+let particles = [];
 
-    document.getElementById(
-    "userNameText"
-    ).innerText =
-    savedName;
+let particleCount = 60;
+
+let colors = [
+    "rgba(0,255,229,",
+    "rgba(0,162,255,",
+    "rgba(155,231,255,"
+];
+
+for(let i = 0; i < particleCount; i++){
+
+    particles.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        r: Math.random() * 2 + 0.6,
+        speedY: Math.random() * 0.6 + 0.15,
+        drift: Math.random() * 0.4 - 0.2,
+        alpha: Math.random() * 0.6 + 0.2,
+        color: colors[Math.floor(Math.random() * colors.length)]
+    });
 }
 
-/* PROFILE IMAGE */
+function animateParticles(){
+
+    ctx.clearRect(
+    0, 0,
+    canvas.width,
+    canvas.height
+    );
+
+    for(let p of particles){
+
+        ctx.beginPath();
+
+        ctx.arc(
+        p.x, p.y,
+        p.r, 0,
+        Math.PI * 2
+        );
+
+        ctx.fillStyle =
+        p.color + p.alpha + ")";
+
+        ctx.shadowBlur = 8;
+        ctx.shadowColor =
+        p.color + "1)";
+
+        ctx.fill();
+
+        p.y -= p.speedY;
+        p.x += p.drift;
+
+        if(p.y < -10){
+
+            p.y = canvas.height + 10;
+            p.x = Math.random() * canvas.width;
+        }
+
+        if(p.x < -10){
+            p.x = canvas.width + 10;
+        }
+
+        if(p.x > canvas.width + 10){
+            p.x = -10;
+        }
+    }
+
+    requestAnimationFrame(animateParticles);
+}
+
+animateParticles();
+
+/* PROFILE IMAGE UPLOAD */
 
 document.getElementById(
 "profileInput"
@@ -626,7 +677,7 @@ function(event){
     }
 });
 
-/* LOAD IMAGE */
+/* LOAD SAVED IMAGE IF ANY */
 
 let savedImage =
 localStorage.getItem(
@@ -640,44 +691,80 @@ if(savedImage){
     ).src =
     savedImage;
 }
-/* date &day */
-function updateDate(){
 
-    let today = new Date();
+/* SHOW ERROR WITH SHAKE */
 
-    let days = [
-        "SUNDAY",
-        "MONDAY",
-        "TUESDAY",
-        "WEDNESDAY",
-        "THURSDAY",
-        "FRIDAY",
-        "SATURDAY"
-    ];
+function showError(message){
 
+    let errorMsg =
+    document.getElementById("errorMsg");
 
-    let day = days[today.getDay()];
+    errorMsg.innerHTML = message;
 
+    errorMsg.classList.remove("shake");
 
-    let date =
-    String(today.getDate()).padStart(2,'0')
-    + "-" +
-    String(today.getMonth()+1).padStart(2,'0')
-    + "-" +
-    today.getFullYear();
+    /* FORCE REFLOW TO RESTART ANIMATION */
 
+    void errorMsg.offsetWidth;
 
-    document.getElementById("dateBox")
-    .innerHTML =
-    `${day}<br>${date}`;
-
+    errorMsg.classList.add("shake");
 }
 
+/* REGISTER FUNCTION */
 
-updateDate();
+function registerUser(){
 
-setInterval(updateDate,60000);
+    let name =
+    document.getElementById("regName").value.trim();
+
+    let email =
+    document.getElementById("regEmail").value.trim();
+
+    let password =
+    document.getElementById("regPassword").value.trim();
+
+    let errorMsg =
+    document.getElementById("errorMsg");
+
+    if(!name || !email || !password){
+
+        showError("Please fill in all fields");
+
+        return;
+    }
+
+    let emailPattern =
+    /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+    if(!emailPattern.test(email)){
+
+        showError("Please enter a valid email");
+
+        return;
+    }
+
+    if(password.length < 4){
+
+        showError("Password must be at least 4 characters");
+
+        return;
+    }
+
+    errorMsg.innerHTML = "";
+    errorMsg.classList.remove("shake");
+
+    /* SAVE USER DATA */
+
+    localStorage.setItem("userName", name);
+    localStorage.setItem("userEmail", email);
+    localStorage.setItem("userPassword", password);
+
+    /* NAVIGATE TO MAIN PAGE */
+
+    window.location.href = "page2.html";
+}
+
 </script>
 
 </body>
-</html><script async data-explicit-opt-in="true" data-cookie-opt-in="true" data-deployment-id="dpl_GQq2pTyEjX3n5PMsAp9JbyhVohmk" src="https://vercel.live/_next-live/feedback/feedback.js"></script>
+</html>
